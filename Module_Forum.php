@@ -39,8 +39,8 @@ final class Module_Forum extends GWF_Module
     {
         return array(
             GDO_Int::make('forum_posts')->unsigned()->initial('0'),
-            GDO_Int::make('forum_threads')->initial('0'),
-            GDO_DateTime::make('forum_readmark')->initial('0')->label('forum_readmark'),
+            GDO_Int::make('forum_threads')->unsigned()->initial('0'),
+            GDO_DateTime::make('forum_readmark')->label('forum_readmark'),
         );
     }
     
