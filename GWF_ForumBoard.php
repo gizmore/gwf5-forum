@@ -87,4 +87,15 @@ final class GWF_ForumBoard extends GWF_Tree
         parent::gdoAfterCreate();
     }
     
+    public function increaseCounters(int $threadsBy, int $postsBy)
+    {
+        GWF_Log::logDebug(sprintf('GWF_ForumBoard::increaseCounters(%s, %s) ID:%s', $threadsBy, $postsBy, $this->getID()));
+        $this->increase('board_threadcount', $threadsBy);
+        $this->increase('board_postcount', $postsBy);
+        if ($parent = $this->getParent())
+        {
+            $parent->increaseCounters($threadsBy, $postsBy);
+        }
+    }
+    
 }

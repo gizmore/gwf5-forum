@@ -31,12 +31,12 @@ final class GDO_ForumBoard extends GDO_Select
 	
 	public function renderCell()
 	{
-		return GWF_Template::modulePHP('Category', 'cell/board.php', ['field'=>$this]);
+		return GWF_Template::modulePHP('Forum', 'cell/board.php', ['field'=>$this]);
 	}
 	
 	public function renderChoice()
 	{
-		return GWF_Template::modulePHP('Category', 'choice/board.php', ['field'=>$this]);
+		return GWF_Template::modulePHP('Forum', 'choice/board.php', ['field'=>$this]);
 	}
 
 	public function render()

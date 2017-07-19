@@ -20,7 +20,7 @@ if ($board->allowsThreads())
 # Threads as list
 $list = GDO_List::make();
 $pagemenu = GDO_PageMenu::make();
-$query = GWF_ForumThread::table()->select()->where("thread_board={$board->getID()}");
+$query = GWF_ForumThread::table()->select()->where("thread_board={$board->getID()}")->order('thread_created', false);
 $pagemenu->filterQuery($query);
 $list->query($query);
 $list->listMode(GDO_List::MODE_LIST);
