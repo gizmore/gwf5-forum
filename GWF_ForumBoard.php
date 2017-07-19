@@ -17,7 +17,7 @@ final class GWF_ForumBoard extends GWF_Tree
     ### GDO ###
     ###########
     public function gdoCached() { return true; }  # GDO Cache is a good idea for Thread->getBoard()
-    public function memCached() { return false; } # uses cacheall in memcached (see further down), so no single row storage for memcached
+    public function memCached() { return true; } # uses cacheall in memcached (see further down), so no single row storage for memcached
     public function gdoColumns()
     {
         return array_merge(array(
@@ -98,4 +98,27 @@ final class GWF_ForumBoard extends GWF_Tree
         }
     }
     
+    public function hasUnreadPosts(GWF_User $user)
+    {
+        $unread = GWF_ForumRead::getUnreadBoards($user);
+        return self::hasBoardUnreadPosts($this, $unread);
+    }
+
+    public static function hasBoardUnreadPosts(GWF_ForumBoard $board, array $unread)
+    {
+        if (isset($unread[$board->getID()]))
+        {
+            return true;
+        }
+        
+        foreach ($board->children as $child)
+        {
+            if (self::hasBoardUnreadPosts($child, $unread))
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }

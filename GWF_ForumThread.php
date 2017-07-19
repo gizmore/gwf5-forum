@@ -59,6 +59,15 @@ final class GWF_ForumThread extends GDO
     public function displayCreated() { return tt($this->getCreated()); }
     
     public function renderList() { return GWF_Template::modulePHP('Forum', 'listitem/thread.php', ['thread'=>$this]); }
+
+    ##############
+    ### Unread ###
+    ##############
+    public function hasUnreadPosts(GWF_User $user)
+    {
+        $unread = GWF_ForumRead::getUnreadThreads($user);
+        return isset($unread[$this->getID()]);
+    }
     
     #############
     ### Hooks ###

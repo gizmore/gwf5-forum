@@ -11,8 +11,12 @@ final class Module_Forum extends GWF_Module
     ### Module ###
     ##############
     public $module_priority = 55;
-    public function getClasses() { return ['GWF_ForumBoard', 'GDO_ForumBoard', 'GWF_ForumThread', 'GWF_ForumPost']; }
+    public function getClasses() { return ['GWF_ForumBoard', 'GDO_ForumBoard', 'GWF_ForumThread', 'GWF_ForumPost', 'GWF_ForumRead', 'GWF_ForumSubscribe', 'GDO_ForumSubscribe']; }
     public function onLoadLanguage() { $this->loadLanguage('lang/forum'); }
+    public function onIncludeScripts()
+    {
+        $this->addCSS('css/gwf-forum.css');
+    }
     
     ##############
     ### Config ###
@@ -20,22 +24,23 @@ final class Module_Forum extends GWF_Module
     /**
      * Let user choose a signature in settings page.
      */
-    public function getUserConfig()
+    public function getUserSettings()
     {
         return array(
-            GDO_Message::make('forum_signature')->utf8()->caseI()->max(512),
+            GDO_Message::make('forum_signature')->utf8()->caseI()->max(512)->label('forum_signature'),
+            GDO_ForumSubscribe::make('forum_subscription')->initial(GDO_ForumSubscribe::OWN),
         );
     }
     
     /**
      * Store some stats in hidden settings.
      */
-    public function getUserSettings()
+    public function getUserConfig()
     {
         return array(
             GDO_Int::make('forum_posts')->unsigned()->initial('0'),
             GDO_Int::make('forum_threads')->initial('0'),
-            GDO_DateTime::make('forum_threads')->initial('0'),
+            GDO_DateTime::make('forum_readmark')->initial('0')->label('forum_readmark'),
         );
     }
     
@@ -49,12 +54,19 @@ final class Module_Forum extends GWF_Module
             GDO_Checkbox::make('forum_attachments')->initial('1'),
             GDO_Level::make('forum_attachment_level')->initial('0'),
             GDO_Level::make('forum_post_level')->initial('0'),
+            GDO_DateTime::make('forum_latest_post_date'),
         );
     }
     public function cfgGuestPosts() { return $this->getConfigValue('forum_guest_posts'); }
     public function cfgAttachments() { return $this->getConfigValue('forum_attachments'); }
     public function cfgAttachmentLevel() { return $this->getConfigValue('forum_attachment_level'); }
     public function cfgPostLevel() { return $this->getConfigValue('forum_post_level'); }
+    public function cfgLastPostDate() { return $this->getConfigVar('forum_latest_post_date'); }
+    
+    ###################
+    ### Permissions ###
+    ###################
+    public function canUpload(GWF_User $user) { return $this->cfgAttachments() && ($user->getLevel() >= $this->cfgAttachmentLevel()); }
     
     ###############
     ### Install ###
@@ -69,6 +81,11 @@ final class Module_Forum extends GWF_Module
             GWF_ForumBoard::blank(['board_title' => 'GWFv5 Forum', 'board_description' => 'Welcome to the GWFv5 Forum Module'])->insert();
         }
     }
+    
+//     #############
+//     ### Hooks ###
+//     #############
+//     public function hookForumPostCreated(GWF_ForumPost $post) {}
     
     ##############
     ### Render ###

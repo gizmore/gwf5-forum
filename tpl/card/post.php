@@ -1,7 +1,11 @@
-<?php $post instanceof GWF_ForumPost; $user = GWF_User::current(); ?>
-<?php $creator = $post->getCreator(); ?>
-<?php $thread = $post->getThread(); ?>
-<md-card>
+<?php $post instanceof GWF_ForumPost; $creator = $post->getCreator(); $user = GWF_User::current(); ?>
+<?php
+$unread = $post->isUnread($user);
+$readClass = $unread ? 'gwf-forum-unread' : 'gwf-forum-read';
+if ($unread) $post->markRead($user);
+?>
+<!-- Begin ForumPost card -->
+<md-card class="<?=$readClass;?>">
   <md-card-title>
     <md-card-title-text>
       <span class="md-headline">
@@ -26,5 +30,5 @@
     <?= GDO_Button::make('btn_reply')->icon('reply')->href($post->hrefReply()); ?>
     <?= GDO_Button::make('btn_quote')->icon('reply_all')->href($post->hrefQuote()); ?>
   </md-card-actions>
-
 </md-card>
+<!-- End ForumPost card -->

@@ -60,6 +60,20 @@ final class GWF_ForumPost extends GDO
     public function displayCreated() { return tt($this->getCreated()); }
     public function renderCard() { return GWF_Template::modulePHP('Forum', 'card/post.php', ['post'=>$this]); }
     
+    ##############
+    ### Unread ###
+    ##############
+    public function isUnread(GWF_User $user)
+    {
+        $unread = GWF_ForumRead::getUnreadPosts($user);
+        return isset($unread[$this->getID()]);
+    }
+    
+    public function markRead(GWF_User $user)
+    {
+        return GWF_ForumRead::markRead($user, $this);
+    }
+    
     #############
     ### Hooks ###
     #############
