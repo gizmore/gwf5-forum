@@ -74,7 +74,7 @@ final class GWF_ForumRead extends GDO
         $module = Module_Forum::instance();
         $latest = $module->cfgLastPostDate();
         $latestU = GWF_UserSetting::userGet($user, 'forum_readmark')->getValue();
-        if ( ($latest === $latestU) )
+        if ( ($latest === $latestU) || (!$user->isAuthenticated()) ) 
         {
             return [];
         }

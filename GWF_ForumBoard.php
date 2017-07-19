@@ -71,7 +71,7 @@ final class GWF_ForumBoard extends GWF_Tree
         return $cache;
     }
     
-    public function recacheAll()
+    public static function recacheAll()
     {
         GDOCache::unset('gwf_forumboard_all');
     }

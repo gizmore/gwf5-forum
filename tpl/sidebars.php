@@ -4,17 +4,19 @@ if ($navbar->isLeft())
 {
     $user = GWF_User::current();
     $module = Module_Forum::instance();
-    $root = GWF_ForumBoard::getById('1');
-    $posts = $root->getPostCount();
-    $link = GDO_Link::make()->label('link_forum', [$posts])->href(href('Forum', 'Boards'));
-    if ($user->isAuthenticated())
+    if ($root = GWF_ForumBoard::getById('1'))
     {
-        if (GWF_ForumRead::countUnread($user) > 0)
+        $posts = $root->getPostCount();
+        $link = GDO_Link::make()->label('link_forum', [$posts])->href(href('Forum', 'Boards'));
+        if ($user->isAuthenticated())
         {
-            $link->icon('notifications_active');
+            if (GWF_ForumRead::countUnread($user) > 0)
+            {
+                $link->icon('notifications_active');
+            }
         }
+        $navbar->addField($link);
     }
-    $navbar->addField($link);
 }
 if ($navbar->isTop())
 {

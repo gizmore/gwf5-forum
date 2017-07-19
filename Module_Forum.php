@@ -55,6 +55,7 @@ final class Module_Forum extends GWF_Module
             GDO_Level::make('forum_attachment_level')->initial('0'),
             GDO_Level::make('forum_post_level')->initial('0'),
             GDO_DateTime::make('forum_latest_post_date'),
+            GDO_Int::make('forum_mail_sent_for_post')->initial('0'),
         );
     }
     public function cfgGuestPosts() { return $this->getConfigValue('forum_guest_posts'); }
@@ -62,6 +63,7 @@ final class Module_Forum extends GWF_Module
     public function cfgAttachmentLevel() { return $this->getConfigValue('forum_attachment_level'); }
     public function cfgPostLevel() { return $this->getConfigValue('forum_post_level'); }
     public function cfgLastPostDate() { return $this->getConfigVar('forum_latest_post_date'); }
+    public function cfgLastPostMail() { return $this->getConfigVar('forum_mail_sent_for_post'); }
     
     ###################
     ### Permissions ###
@@ -82,10 +84,19 @@ final class Module_Forum extends GWF_Module
         }
     }
     
-//     #############
-//     ### Hooks ###
-//     #############
-//     public function hookForumPostCreated(GWF_ForumPost $post) {}
+    public function onWipe()
+    {
+        GDOCache::flush();
+    }
+    
+    #############
+    ### Hooks ###
+    #############
+    public function hookForumPostCreated(GWF_ForumPost $post)
+    {
+        $post->getThread()->getBoard()->recache();
+        GWF_ForumBoard::recacheAll();
+    }
     
     ##############
     ### Render ###

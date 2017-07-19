@@ -29,4 +29,10 @@ final class Forum_CRUDBoard extends GWF_MethodCrud
         $this->createFormButtons($form);
     }
     
+    public function afterUpdate(GWF_Form $form)
+    {
+        GWF_ForumBoard::recacheAll();
+        $this->gdo->recache();
+    }
+    
 }
