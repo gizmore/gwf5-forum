@@ -56,10 +56,11 @@ final class GWF_ForumPost extends GDO
     ##############
     ### Render ###
     ##############
+    public function displaySignature() { return GWF_UserSetting::userGet($this->getCreator(), 'forum_signature')->renderCell(); }
     public function displayMessage() { return $this->gdoColumn('post_message')->renderCell(); }
     public function displayCreated() { return tt($this->getCreated()); }
     public function renderCard() { return GWF_Template::modulePHP('Forum', 'card/post.php', ['post'=>$this]); }
-    
+
     ##############
     ### Unread ###
     ##############

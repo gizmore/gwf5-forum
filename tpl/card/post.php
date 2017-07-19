@@ -23,6 +23,8 @@ if ($unread) $post->markRead($user);
       <div><?= $post->getAttachment()->renderCell(); ?></div>
     </div>
 <?php endif; ?>
+      <hr/>
+      <?= $post->displaySignature(); ?>
   </md-card-content>
   <gwf-div></gwf-div>
   <md-card-actions layout="row" layout-align="end center">

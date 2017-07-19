@@ -24,7 +24,7 @@ final class Forum_CronjobMailer extends GWF_MethodCronjob
         $sentTo = [];
         
         # Sent to those who subscribe the whole board
-        $query = GWF_UserSetting::table()->select('gwf_user.*')->joinObject('uset_user')->where("uset_module=$mid");
+        $query = GWF_UserSetting::table()->select('gwf_user.*')->joinObject('uset_user');
         $query->where("uset_name='forum_subscription'")->where("uset_value='fsub_all'");
         $result = $query->fetchTable(GWF_User::table())->uncached()->exec();
         while ($user = $result->fetchObject())
@@ -38,7 +38,7 @@ final class Forum_CronjobMailer extends GWF_MethodCronjob
         
         # Sent to those who subscribe their own threads
         $query = GWF_ForumPost::table()->select('gwf_user.*')->joinObject('post_creator');
-        $query->join(" JOIN gwf_usersetting ON uset_user=user_id AND uset_name='forum_subscription' AND uset_module=$mid");
+        $query->join("LEFT JOIN gwf_usersetting ON uset_user=user_id AND uset_name='forum_subscription'");
         $query->where("post_thread={$post->getThreadID()}")->where("uset_value IS NULL OR uset_value = 'fsub_own'");
         $result = $query->fetchTable(GWF_User::table())->uncached()->exec();
         while ($user = $result->fetchObject())

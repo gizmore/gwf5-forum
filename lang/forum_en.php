@@ -35,4 +35,27 @@ return array(
 'enum_fsub_none' => 'Only Manually per thread/board',
 'enum_fsub_own' => '+ Auto to threads where i posted',
 'enum_fsub_all' => 'Automatically subscribe the whole forum',
+#######################################################################
+'mail_subj_forum_post' => '[%s] Post in %s',
+'mail_body_forum_post' => '
+Dear %s,
+
+There has been made a new forum post on %s in one of your subscribed threads.
+
+Thread: %s
+From: %s
+----------------------------------------------------------
+
+%s
+
+----------------------------------------------------------
+
+If you do not like to get any further forum notifications,
+you can click on the link below.
+
+%s
+
+Kind Regards
+The %2$s Team',
+#######################################################################
 );

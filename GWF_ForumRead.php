@@ -39,7 +39,7 @@ final class GWF_ForumRead extends GDO
             if ($latest !== $latestU)
             {
                 # We have read all and can move the marker to current timestamp.
-                GWF_UserSetting::moduleUserSet($module->getID(), $user, 'forum_readmark', $latest);
+                GWF_UserSetting::userSet($user, 'forum_readmark', $latest);
                 GWF_ForumRead::table()->deleteWhere("read_user={$user->getID()}");
             }
         }

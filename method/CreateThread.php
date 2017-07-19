@@ -37,10 +37,13 @@ final class Forum_CreateThread extends GWF_MethodForm
     
     public function formValidated(GWF_Form $form)
     {
+        $module = Module_Forum::instance();
         $thread = GWF_ForumThread::blank($form->values())->insert();
         $post = $this->post = GWF_ForumPost::blank($form->values())->setVar('post_thread', $thread->getID())->insert();
-        Module_Forum::instance()->saveConfigVar('forum_latest_post_date', $post->getCreated());
+        $module->saveConfigVar('forum_latest_post_date', $post->getCreated());
         GWF_ForumRead::markRead(GWF_User::current(), $post);
+        GWF_UserSetting::inc('forum_threads');
+        GWF_UserSetting::inc('forum_posts');
         $redirect = GWF_Website::redirectMessage(href('Forum', 'Thread', '&thread='.$thread->getID()));
         return $this->message('msg_thread_created')->add($redirect);
     }

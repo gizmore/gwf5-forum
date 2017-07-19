@@ -64,7 +64,9 @@ final class Forum_CRUDPost extends GWF_MethodCrud
     
     public function afterCreate(GWF_Form $form)
     {
-        Module_Forum::instance()->saveConfigVar('forum_latest_post_date', $this->gdo->getCreated());
+        $module = Module_Forum::instance();
+        $module->saveConfigVar('forum_latest_post_date', $this->gdo->getCreated());
+        GWF_UserSetting::inc('forum_posts');
         GWF_ForumRead::markRead(GWF_User::current(), $this->gdo);
     }
     
