@@ -12,7 +12,7 @@ $readClass = $board->hasUnreadPosts($user) ? 'gwf-forum-unread' : 'gwf-forum-rea
   </div>
 
   <?= GDO_Icon::iconS('arrow_right'); ?>
-  <?php $href = $subscribed ? href('Forum', 'Unubscribe', '&board='.$bid) : href('Forum', 'Subscribe', '&board='.$bid)?>
+  <?php $href = $subscribed ? href('Forum', 'Unsubscribe', '&board='.$bid) : href('Forum', 'Subscribe', '&board='.$bid)?>
   <?= GDO_IconButton::make()->href($href)->icon('email'); ?>
       
 </md-list-item>

@@ -26,6 +26,6 @@ final class Forum_Unsubscribe extends GWF_Method
             $redirect = GWF_Website::redirectMessage(href('Forum', 'Boards', '&boardid='.$thread->getBoard()->getID()));
         }
         
-        return $this->message('msg_subscribed')->add($redirect);
+        return $this->message('msg_unsubscribed')->add($redirect);
     }
 }

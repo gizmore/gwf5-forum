@@ -14,6 +14,9 @@ return array(
 'posted_at' => 'Posted at %s',
 'li_thread_created' => 'By %s',
 #######################################################################
+'msg_subscribed' => 'You have subscribed via mail.',
+'msg_unsubscribed' => 'You have not subscribed via mail.',
+#######################################################################
 'no_parent' => 'No parent selected',
 'board_allow_threads' => 'Allow threads for this board',
 #######################################################################
