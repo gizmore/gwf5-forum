@@ -1,31 +1,26 @@
 <?php
-final class Forum_Subscribe extends GWF_Method
+final class Forum_Unsubscribe extends GWF_Method
 {
     public function execute()
     {
         $user = GWF_User::current();
-        if ($boardId = Common::getRequestString('board'))
+        $uid = $user->getID();
+        if ($boardId = Common::getRequestInt('board'))
         {
-            if ($boardId === '1')
+            if ($boardId === 1)
             {
                 return $this->error('err_please_use_subscribe_all');
             }
             $board = GWF_ForumBoard::findById($boardId);
-            GWF_ForumBoardSubscribe::blank(array(
-                'subscribe_user' => $user->getID(),
-                'subscribe_board' => $boardId,
-            ))->replace();
+            GWF_ForumBoardSubscribe::table()->deleteWhere("subscribe_user=$uid AND subscribe_board=$boardId")->exec();
             $user->tempUnset('gwf_forum_board_subsciptions');
             $user->recache();
             $redirect = GWF_Website::redirectMessage(href('Forum', 'Boards', '&board='.$board->getParent()->getID()));
         }
-        elseif ($threadId = Common::getRequestString('thread'))
+        elseif ($threadId = Common::getRequestInt('thread'))
         {
             $thread = GWF_ForumThread::findById($threadId);
-            GWF_ForumThreadSubscribe::blank(array(
-                'subscribe_user' => $user->getID(),
-                'subscribe_thread' => $threadId,
-            ))->replace();
+            GWF_ForumThreadSubscribe::table()->deleteWhere("subscribe_user=$uid AND subscribe_thread=$threadId")->exec();
             $user->tempUnset('gwf_forum_thread_subsciptions');
             $user->recache();
             $redirect = GWF_Website::redirectMessage(href('Forum', 'Boards', '&boardid='.$thread->getBoard()->getID()));
