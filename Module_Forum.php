@@ -11,7 +11,7 @@ final class Module_Forum extends GWF_Module
     ### Module ###
     ##############
     public $module_priority = 55;
-    public function getClasses() { return ['GWF_ForumBoard', 'GDO_ForumBoard', 'GWF_ForumThread', 'GWF_ForumPost', 'GWF_ForumRead', 'GWF_ForumSubscribe', 'GDO_ForumSubscribe']; }
+    public function getClasses() { return ['GWF_ForumBoard', 'GDO_ForumBoard', 'GWF_ForumThread', 'GWF_ForumPost', 'GWF_ForumRead', 'GWF_ForumBoardSubscribe', 'GDO_ForumSubscribe']; }
     public function onLoadLanguage() { $this->loadLanguage('lang/forum'); }
     public function onIncludeScripts()
     {

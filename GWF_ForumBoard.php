@@ -121,4 +121,28 @@ final class GWF_ForumBoard extends GWF_Tree
         
         return false;
     }
+    
+    public function hasSubscribed(GWF_User $user)
+    {
+        if (GWF_UserSetting::userGet($user, 'forum_subscription') === GDO_ForumSubscribe::ALL)
+        {
+            return true;
+        }
+        return strpos($this->getForumSubscriptions($user), ",{$this->getID()},") !== false;
+    }
+    
+    public function getForumSubscriptions(GWF_User $user)
+    {
+        if (!($cache = $user->tempGet('gwf_forum_board_subsciptions')))
+        {
+            $cache = GWF_ForumBoardSubscribe::table()->select('GROUP_CONCAT(subscribe_board)')->where("subscribe_user={$user->getID()}")->exec()->fetchValue();
+            $cache = empty($cache) ? '' : ",$cache,";
+            $user->tempSet('gwf_forum_board_subsciptions', $cache);
+            $user->recache();
+        }
+        return $cache;
+    }
+    
+    
+    
 }

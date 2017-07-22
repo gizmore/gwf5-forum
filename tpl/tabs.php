@@ -24,13 +24,14 @@ $bar->addFields($links);
 # Header Edit button. Either edit board or thread
 if ($user->isStaff())
 {
-    if (Common::getGetString('me')==='Boards')
+    if (isset($_GET['thread']))
     {
-        $bar->addField(GDO_IconButton::make()->icon('edit')->href(href('Forum', 'CRUDBoard', '&id='.$board->getID())));
+        $bar->addField(GDO_IconButton::make()->icon('edit')->href(href('Forum', 'EditThread', '&id='.Common::getGetString('thread'))));
+        
     }
     else
     {
-        $bar->addField(GDO_IconButton::make()->icon('edit')->href(href('Forum', 'EditThread', '&id='.Common::getGetString('thread'))));
+        $bar->addField(GDO_IconButton::make()->icon('edit')->href(href('Forum', 'CRUDBoard', '&id='.$board->getID())));
     }
 }
 

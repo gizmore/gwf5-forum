@@ -14,6 +14,13 @@ final class Forum_CreateThread extends GWF_MethodForm
     
     public function isGuestAllowed() { return Module_Forum::instance()->cfgGuestPosts(); }
     
+    public function execute()
+    {
+        $response = parent::execute();
+        $tabs = Module_Forum::instance()->renderTabs();
+        return $tabs->add($response);
+    }
+    
     public function createForm(GWF_Form $form)
     {
         $gdo = GWF_ForumThread::table();

@@ -1,3 +1,7 @@
 .gwf-forum-unread {
 	background: lightyellow;
 }
+
+.gwf-forum-subscribed .icon-email {
+	color: green;
+}
