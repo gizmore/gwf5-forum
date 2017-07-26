@@ -28,7 +28,7 @@ if ($unread) $post->markRead($user);
   </md-card-content>
   <gwf-div></gwf-div>
   <md-card-actions layout="row" layout-align="end center">
-    <?= GDO_EditButton::make()->href($post->hrefEdit())->writable($post->canEdit($user)); ?>
+    <?= GDO_EditButton::make()->href($post->hrefEdit())->editable($post->canEdit($user)); ?>
     <?= GDO_Button::make('btn_reply')->icon('reply')->href($post->hrefReply()); ?>
     <?= GDO_Button::make('btn_quote')->icon('reply_all')->href($post->hrefQuote()); ?>
   </md-card-actions>

@@ -22,7 +22,7 @@ final class Forum_CRUDBoard extends GWF_MethodCrud
         $form->addFields(array(
             $gdo->gdoColumn('board_title'),
             $gdo->gdoColumn('board_description'),
-            GDO_ForumBoard::make('board_parent')->label('parent')->notNull()->initial($boardId)->writable($boardId>1),
+            GDO_ForumBoard::make('board_parent')->label('parent')->notNull()->initial($boardId)->editable($boardId>1),
             $gdo->gdoColumn('board_permission'),
             $gdo->gdoColumn('board_allow_threads'),
         ));

@@ -26,7 +26,7 @@ final class Forum_CreateThread extends GWF_MethodForm
         $gdo = GWF_ForumThread::table();
         $posts = GWF_ForumPost::table();
         $form->addFields(array(
-            $gdo->gdoColumn('thread_board')->initial(Common::getRequestString('board'))->writable(false),
+            $gdo->gdoColumn('thread_board')->initial(Common::getRequestString('board'))->editable(false),
             $gdo->gdoColumn('thread_title'),
             $posts->gdoColumn('post_message'),
             $posts->gdoColumn('post_attachment'),
