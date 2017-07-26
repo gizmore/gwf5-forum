@@ -52,8 +52,8 @@ final class Forum_CronjobMailer extends GWF_MethodCronjob
         
         # Sent to those who subscribed via thread or board
         $bids = implode(',', $this->getBoardIDs($post));
-        $query = GWF_ForumSubscribe::table()->select('gwf_user.*')->joinObject('subscribe_user');
-        $query->where("subscribe_thread={$post->getThreadID()}")->or("subscribe_board IN ($bids)");
+        $query = GWF_ForumBoardSubscribe::table()->select('gwf_user.*')->joinObject('subscribe_user');
+        $query->where("subscribe_board IN ($bids)");
         $result = $query->fetchTable(GWF_User::table())->uncached()->exec();
         while ($user = $result->fetchObject())
         {
@@ -63,7 +63,20 @@ final class Forum_CronjobMailer extends GWF_MethodCronjob
                 $sentTo[] = $user->getID();
             }
         }
-    
+        
+        # Sent to those who subscribed via thread or board
+        $query = GWF_ForumThreadSubscribe::table()->select('gwf_user.*')->joinObject('subscribe_user');
+        $query->where("subscribe_thread={$post->getThreadID()}");
+        $result = $query->fetchTable(GWF_User::table())->uncached()->exec();
+        while ($user = $result->fetchObject())
+        {
+            if (!in_array($user->getID(), $sentTo, true))
+            {
+                $this->mailSubscription($post, $user);
+                $sentTo[] = $user->getID();
+            }
+        }
+        
     }
     
     private function getBoardIDs(GWF_ForumPost $post)
